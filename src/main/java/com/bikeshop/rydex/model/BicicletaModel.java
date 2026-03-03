@@ -1,5 +1,6 @@
 package com.bikeshop.rydex.model;
 
+import com.bikeshop.rydex.enums.TipoBicicleta;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +26,8 @@ public class BicicletaModel {
     private String marca;
     private String modelo;
 
-    // private TipoBicleta tipo; debe crearse un enum
+    @Enumerated(EnumType.STRING)
+    private TipoBicicleta tipo;
 
     @Column(nullable = false)
     private BigDecimal precio;
