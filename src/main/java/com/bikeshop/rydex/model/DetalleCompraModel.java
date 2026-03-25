@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -20,18 +21,16 @@ public class DetalleCompraModel {
     private Integer cantidad;
 
     @Column(nullable = false)
-    private Double precioUnitario;
+    private BigDecimal precioUnitario;
 
     @Column(nullable = false)
-    private Double subtotal;
+    private BigDecimal subtotal;
 
-    // Relación con la Compra (Cabecera)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_compra", nullable = false)
     private CompraModel compra;
 
-    // Relación con la Bicicleta (Producto)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_bicicleta", nullable = false)
     private BicicletaModel bicicleta;
 }

@@ -5,13 +5,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 
 @Data
 @Entity
-@NoArgsConstructor // <--- Constructor vacío para JPA
-@AllArgsConstructor // <--- Constructor lleno para desarrollo/testing
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "bicicletas")
 public class BicicletaModel {
 
@@ -24,7 +23,10 @@ public class BicicletaModel {
 
     @Column(nullable = false)
     private String marca;
+
     private String modelo;
+
+    private String descripcion;
 
     @Enumerated(EnumType.STRING)
     private TipoBicicleta tipo;
@@ -32,6 +34,11 @@ public class BicicletaModel {
     @Column(nullable = false)
     private BigDecimal precio;
 
+    // stock_actual: unidades disponibles actualmente
     @Column(nullable = false)
-    private int stock;
+    private int stockActual;
+
+    // stock_minimo: umbral mínimo antes de necesitar reabastecer
+    @Column(nullable = false)
+    private int stockMinimo;
 }
