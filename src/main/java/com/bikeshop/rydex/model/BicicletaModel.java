@@ -28,6 +28,8 @@ public class BicicletaModel {
 
     private String descripcion;
 
+    private String etiqueta; // "NEW ARRIVAL" | "LUXURY TIER" | null
+
     @Enumerated(EnumType.STRING)
     private TipoBicicleta tipo;
 
