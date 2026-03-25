@@ -19,10 +19,12 @@ public class ProveedorModel {
     @Column(nullable = false)
     private String nombreEmpresa;
 
+    @Column(nullable = false)
     private String personaContacto;
 
     @Column(nullable = false)
     private String telefonoContacto;
 
+    @Column(nullable = false, unique = true)
     private String emailContacto;
 }

@@ -4,13 +4,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 
 @Data
 @Entity
-@NoArgsConstructor // <--- Constructor vacío para JPA
-@AllArgsConstructor // <--- Constructor lleno para desarrollo/testing
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "detalle_ventas")
 public class DetalleVentaModel {
 
@@ -21,14 +20,18 @@ public class DetalleVentaModel {
     @Column(nullable = false)
     private int cantidad;
 
+    // precio al momento de la venta (histórico — no cambia si el precio sube)
+    @Column(nullable = false)
+    private BigDecimal precioUnitario;
+
     @Column(nullable = false)
     private BigDecimal subtotal;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_bicicleta")
     private BicicletaModel bicicleta;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_venta")
     private VentaModel venta;
 }

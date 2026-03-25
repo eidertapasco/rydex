@@ -1,7 +1,8 @@
 package com.bikeshop.rydex.enums;
 
 public enum TipoBicicleta {
-    MONTANA,
-    RUTA,
-    URBANA
+    Mountain,
+    Road,
+    Electric,
+    Gear
 }
