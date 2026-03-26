@@ -1,5 +1,6 @@
 package com.bikeshop.rydex.config;
 
+import com.bikeshop.rydex.repository.ClienteRepository;
 import com.bikeshop.rydex.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -27,6 +32,19 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final ClienteRepository clienteRepository;
+
+    // Le dice a Spring Security que busque usuarios en la BD, no en memoria
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return email -> clienteRepository.findByEmail(email)
+                .map(c -> new User(
+                        c.getEmail(),
+                        c.getPassword(),
+                        List.of(new SimpleGrantedAuthority("ROLE_" + c.getRol().name()))
+                ))
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
