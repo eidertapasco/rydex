@@ -1,5 +1,6 @@
 package com.bikeshop.rydex.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -10,7 +11,8 @@ import java.util.List;
 public class VentaRequest {
 
     @NotNull
-    private Long id_cliente;
+    @JsonProperty("id_cliente")
+    private Long idCliente;
 
     @NotNull
     private BigDecimal total;
@@ -20,9 +22,15 @@ public class VentaRequest {
 
     @Data
     public static class DetalleVentaRequest {
-        private Long id_bicicleta;
+
+        @JsonProperty("id_bicicleta")
+        private Long idBicicleta;
+
         private int cantidad;
-        private BigDecimal precio_unitario;
+
+        @JsonProperty("precio_unitario")
+        private BigDecimal precioUnitario;
+
         private BigDecimal subtotal;
     }
 }

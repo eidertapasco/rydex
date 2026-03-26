@@ -1,5 +1,6 @@
 package com.bikeshop.rydex.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -20,15 +21,17 @@ public class BicicletaRequest {
     private String modelo;
 
     @NotBlank
-    private String tipo; // "Mountain" | "Road" | "Electric" | "Gear"
+    private String tipo;
 
     @NotNull
     @Positive
     private BigDecimal precio;
 
-    private int stock_actual;
+    @JsonProperty("stock_actual")
+    private int stockActual;
 
-    private int stock_minimo;
+    @JsonProperty("stock_minimo")
+    private int stockMinimo;
 
     private String descripcion;
 

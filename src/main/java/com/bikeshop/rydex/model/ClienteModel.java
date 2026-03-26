@@ -1,6 +1,8 @@
 package com.bikeshop.rydex.model;
 
 import com.bikeshop.rydex.enums.RolUsuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +17,7 @@ public class ClienteModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("id_cliente")
     private Long idCliente;
 
     @Column(nullable = false)
@@ -25,12 +28,12 @@ public class ClienteModel {
 
     private String telefono;
 
-    // Campos nuevos para autenticación
     @Column(nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore  // Nunca serializar la contraseña en respuestas JSON
     @Column(nullable = false)
-    private String password; // Se guarda como hash BCrypt
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

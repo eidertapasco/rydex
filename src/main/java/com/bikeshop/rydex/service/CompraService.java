@@ -20,7 +20,7 @@ public class CompraService {
 
     @Transactional
     public CompraModel createCompra(CompraRequest request) {
-        ProveedorModel proveedor = proveedorRepository.findById(request.getId_proveedor())
+        ProveedorModel proveedor = proveedorRepository.findById(request.getIdProveedor())
                 .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
 
         CompraModel compra = new CompraModel();
@@ -29,8 +29,8 @@ public class CompraService {
 
         List<DetalleCompraModel> detalles = new ArrayList<>();
         for (CompraRequest.DetalleCompraRequest d : request.getDetalles()) {
-            BicicletaModel bici = bicicletaRepository.findById(d.getId_bicicleta())
-                    .orElseThrow(() -> new RuntimeException("Bicicleta no encontrada: " + d.getId_bicicleta()));
+            BicicletaModel bici = bicicletaRepository.findById(d.getIdBicicleta())
+                    .orElseThrow(() -> new RuntimeException("Bicicleta no encontrada: " + d.getIdBicicleta()));
 
             // Al comprar, aumentar el stock
             bici.setStockActual(bici.getStockActual() + d.getCantidad());
@@ -40,7 +40,7 @@ public class CompraService {
             detalle.setCompra(compra);
             detalle.setBicicleta(bici);
             detalle.setCantidad(d.getCantidad());
-            detalle.setPrecioUnitario(d.getPrecio_unitario());
+            detalle.setPrecioUnitario(d.getPrecioUnitario());
             detalle.setSubtotal(d.getSubtotal());
             detalles.add(detalle);
         }
