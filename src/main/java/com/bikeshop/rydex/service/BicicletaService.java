@@ -18,16 +18,14 @@ public class BicicletaService {
 
     private final BicicletaRepository bicicletaRepository;
 
-    // GET /api/bicicletas con filtros y paginación
     public PagedResponse<BicicletaResponse> findAll(
             String tipo, String marca, BigDecimal precioMin,
             BigDecimal precioMax, String q, int page, int pageSize) {
 
         TipoBicicleta tipoBicicleta = null;
         if (tipo != null && !tipo.isBlank()) {
-            try {
-                tipoBicicleta = TipoBicicleta.valueOf(tipo);
-            } catch (IllegalArgumentException ignored) {}
+            try { tipoBicicleta = TipoBicicleta.valueOf(tipo); }
+            catch (IllegalArgumentException ignored) {}
         }
 
         List<BicicletaModel> results = bicicletaRepository.findWithFilters(
@@ -38,7 +36,7 @@ public class BicicletaService {
                 (q != null && !q.isBlank()) ? q : null
         );
 
-        int total = results.size();
+        int total     = results.size();
         int fromIndex = Math.min(page * pageSize, total);
         int toIndex   = Math.min(fromIndex + pageSize, total);
         List<BicicletaResponse> pageData = results.subList(fromIndex, toIndex)
@@ -47,25 +45,21 @@ public class BicicletaService {
         return new PagedResponse<>(pageData, total, page, pageSize);
     }
 
-    // GET /api/bicicletas/:id
     public BicicletaResponse findById(Long id) {
         BicicletaModel b = bicicletaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Bicicleta no encontrada"));
         return BicicletaResponse.from(b);
     }
 
-    // GET /api/bicicletas/marcas
     public List<String> findMarcas() {
         return bicicletaRepository.findDistinctMarcas();
     }
 
-    // POST /api/bicicletas
     public BicicletaResponse create(BicicletaRequest request) {
         BicicletaModel b = mapRequestToModel(new BicicletaModel(), request);
         return BicicletaResponse.from(bicicletaRepository.save(b));
     }
 
-    // PUT /api/bicicletas/:id
     public BicicletaResponse update(Long id, BicicletaRequest request) {
         BicicletaModel b = bicicletaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Bicicleta no encontrada"));
@@ -73,7 +67,6 @@ public class BicicletaService {
         return BicicletaResponse.from(bicicletaRepository.save(b));
     }
 
-    // DELETE /api/bicicletas/:id
     public void delete(Long id) {
         if (!bicicletaRepository.existsById(id)) {
             throw new RuntimeException("Bicicleta no encontrada");
@@ -87,8 +80,8 @@ public class BicicletaService {
         b.setModelo(r.getModelo());
         b.setTipo(TipoBicicleta.valueOf(r.getTipo()));
         b.setPrecio(r.getPrecio());
-        b.setStockActual(r.getStock_actual());
-        b.setStockMinimo(r.getStock_minimo());
+        b.setStockActual(r.getStockActual());     // ahora usa getStockActual()
+        b.setStockMinimo(r.getStockMinimo());     // ahora usa getStockMinimo()
         b.setDescripcion(r.getDescripcion());
         b.setEtiqueta(r.getEtiqueta());
         return b;

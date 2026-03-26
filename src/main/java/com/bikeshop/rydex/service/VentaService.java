@@ -21,7 +21,7 @@ public class VentaService {
 
     @Transactional
     public VentaModel createVenta(VentaRequest request) {
-        ClienteModel cliente = clienteRepository.findById(request.getId_cliente())
+        ClienteModel cliente = clienteRepository.findById(request.getIdCliente())
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
         VentaModel venta = new VentaModel();
@@ -30,10 +30,9 @@ public class VentaService {
 
         List<DetalleVentaModel> detalles = new ArrayList<>();
         for (VentaRequest.DetalleVentaRequest d : request.getDetalles()) {
-            BicicletaModel bici = bicicletaRepository.findById(d.getId_bicicleta())
-                    .orElseThrow(() -> new RuntimeException("Bicicleta no encontrada: " + d.getId_bicicleta()));
+            BicicletaModel bici = bicicletaRepository.findById(d.getIdBicicleta())
+                    .orElseThrow(() -> new RuntimeException("Bicicleta no encontrada: " + d.getIdBicicleta()));
 
-            // Verificar y reducir stock
             if (bici.getStockActual() < d.getCantidad()) {
                 throw new RuntimeException("Stock insuficiente para: " + bici.getMarca() + " " + bici.getModelo());
             }
@@ -44,7 +43,7 @@ public class VentaService {
             detalle.setVenta(venta);
             detalle.setBicicleta(bici);
             detalle.setCantidad(d.getCantidad());
-            detalle.setPrecioUnitario(d.getPrecio_unitario());
+            detalle.setPrecioUnitario(d.getPrecioUnitario());
             detalle.setSubtotal(d.getSubtotal());
             detalles.add(detalle);
         }
@@ -58,19 +57,17 @@ public class VentaService {
     }
 
     public List<VentaModel> findByFecha(String fecha) {
-        // fecha en formato "2024-01-15"
         java.time.LocalDate date = java.time.LocalDate.parse(fecha);
         java.time.LocalDateTime start = date.atStartOfDay();
         java.time.LocalDateTime end   = date.atTime(23, 59, 59);
         return ventaRepository.findByFechaBetween(start, end);
     }
 
-    // Respuesta simplificada para el frontend
     public Map<String, Object> ventaToMap(VentaModel v) {
         return Map.of(
                 "id_venta", v.getIdVenta(),
-                "fecha", v.getFecha(),
-                "total", v.getTotal()
+                "fecha",    v.getFecha(),
+                "total",    v.getTotal()
         );
     }
 }

@@ -1,5 +1,6 @@
 package com.bikeshop.rydex.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,17 +15,20 @@ public class ProveedorModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("id_proveedor")
     private Long idProveedor;
 
     @Column(nullable = false)
+    @JsonProperty("nombre_empresa")
     private String nombreEmpresa;
 
-    @Column(nullable = false)
+    @JsonProperty("persona_contacto")
     private String personaContacto;
 
     @Column(nullable = false)
+    @JsonProperty("telefono_contacto")
     private String telefonoContacto;
 
-    @Column(nullable = false, unique = true)
+    @JsonProperty("email_contacto")
     private String emailContacto;
 }

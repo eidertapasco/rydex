@@ -1,5 +1,6 @@
 package com.bikeshop.rydex.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,7 +14,10 @@ public class AuthResponse {
     @Data
     @AllArgsConstructor
     public static class ClienteResponse {
+
+        @JsonProperty("id_cliente")
         private Long idCliente;
+
         private String nombre;
         private String email;
         private String documento;

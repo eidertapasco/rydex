@@ -38,10 +38,10 @@ public class ProveedorService {
     }
 
     private ProveedorModel mapToModel(ProveedorModel p, ProveedorRequest r) {
-        p.setNombreEmpresa(r.getNombre_empresa());
-        p.setPersonaContacto(r.getPersona_contacto());
-        p.setTelefonoContacto(r.getTelefono_contacto());
-        p.setEmailContacto(r.getEmail_contacto());
+        p.setNombreEmpresa(r.getNombreEmpresa());
+        p.setPersonaContacto(r.getPersonaContacto());
+        p.setTelefonoContacto(r.getTelefonoContacto());
+        p.setEmailContacto(r.getEmailContacto());
         return p;
     }
 }
