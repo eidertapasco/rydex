@@ -13,7 +13,7 @@ VALUES ('Giant Bikes', 'Ana Mora', '6019876543', 'contacto@giantbikes.co');
 
 -- BICICLETAS MOUNTAIN
 INSERT INTO bicicletas (sku, marca, modelo, tipo, precio, stock_actual, stock_minimo, descripcion, etiqueta, imagen_url)
-VALUES ('MTB-TREK-001', 'Trek', 'Marlin 7', 'Mountain', 2800000, 8, 3, 'Bicicleta de montaña con suspensión delantera RockShox, cambios Shimano Deore 1x12.', 'NEW ARRIVAL', '/images/trek-marlin7.webp');
+VALUES ('MTB-TREK-001', 'Trek', 'Marlin 7', 'Mountain', 2800000, 8, 3, 'Bicicleta de montaña con suspensión delantera RockShox, cambios Shimano Deore 1x12.', 'NEW ARRIVAL', '/placeholder-bike.jpg');
 
 INSERT INTO bicicletas (sku, marca, modelo, tipo, precio, stock_actual, stock_minimo, descripcion, etiqueta, imagen_url)
 VALUES ('MTB-SPEC-002', 'Specialized', 'Rockhopper Expert', 'Mountain', 3500000, 5, 2, 'Cuadro de aluminio FACT 3m, horquilla SR Suntour XCR, transmisión Shimano Deore.', NULL, '/placeholder-bike.jpg');
