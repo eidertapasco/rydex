@@ -33,6 +33,9 @@ public class BicicletaRequest {
     @JsonProperty("stock_minimo")
     private int stockMinimo;
 
+    @JsonProperty("imagen_url")
+    private String imagenUrl;
+
     private String descripcion;
 
     private String etiqueta;

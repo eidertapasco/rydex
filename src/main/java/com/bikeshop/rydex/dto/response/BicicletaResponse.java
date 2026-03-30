@@ -15,6 +15,7 @@ public class BicicletaResponse {
     private String modelo;
     private String tipo;
     private BigDecimal precio;
+    private String imagen_url;
     private int stock_actual;
     private int stock_minimo;
     private String descripcion;
@@ -29,6 +30,7 @@ public class BicicletaResponse {
         dto.modelo       = b.getModelo();
         dto.tipo         = b.getTipo() != null ? b.getTipo().name() : null;
         dto.precio       = b.getPrecio();
+        dto.imagen_url   = b.getImagenUrl();
         dto.stock_actual = b.getStockActual();
         dto.stock_minimo = b.getStockMinimo();
         dto.descripcion  = b.getDescripcion();

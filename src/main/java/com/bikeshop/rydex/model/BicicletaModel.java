@@ -1,6 +1,7 @@
 package com.bikeshop.rydex.model;
 
 import com.bikeshop.rydex.enums.TipoBicicleta;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,6 +36,10 @@ public class BicicletaModel {
 
     @Column(nullable = false)
     private BigDecimal precio;
+
+    @Column(name = "imagen_url")
+    @JsonProperty("imagen_url")
+    private String imagenUrl;
 
     // stock_actual: unidades disponibles actualmente
     @Column(nullable = false)
