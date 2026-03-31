@@ -80,6 +80,7 @@ public class BicicletaService {
         b.setModelo(r.getModelo());
         b.setTipo(TipoBicicleta.valueOf(r.getTipo()));
         b.setPrecio(r.getPrecio());
+        b.setImagenUrl(r.getImagenUrl());
         b.setStockActual(r.getStockActual());     // ahora usa getStockActual()
         b.setStockMinimo(r.getStockMinimo());     // ahora usa getStockMinimo()
         b.setDescripcion(r.getDescripcion());
