@@ -79,4 +79,15 @@ public class VentaService {
                 "total",    v.getTotal()
         );
     }
+
+    // Metodo para buscar una venta por su ID
+    public VentaModel findById(Long id) {
+        return ventaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Venta no encontrada con ID: " + id));
+    }
+
+    // Devuelve solo las compras del usuario autenticado
+    public List<VentaModel> getMisCompras(String emailCliente) {
+        return ventaRepository.findByCliente_Email(emailCliente);
+    }
 }

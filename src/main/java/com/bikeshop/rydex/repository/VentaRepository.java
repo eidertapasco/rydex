@@ -21,4 +21,7 @@ public interface VentaRepository extends JpaRepository<VentaModel, Long> {
 
     // pa saber cuántas ventas se hicieron desde una fecha específica
     long countByFechaGreaterThanEqual(LocalDateTime fecha);
+
+    // Busca todas las ventas de un cliente basándose en su email
+    List<VentaModel> findByCliente_Email(String email);
 }

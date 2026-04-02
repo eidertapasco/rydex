@@ -26,6 +26,7 @@ public class CompraService {
         CompraModel compra = new CompraModel();
         compra.setProveedor(proveedor);
         compra.setTotal(request.getTotal());
+        compra.setFecha(java.time.LocalDateTime.now());
 
         List<DetalleCompraModel> detalles = new ArrayList<>();
         for (CompraRequest.DetalleCompraRequest d : request.getDetalles()) {
