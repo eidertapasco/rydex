@@ -36,7 +36,7 @@ public class BicicletaController {
             @RequestParam(required = false) BigDecimal precioMax,
             @RequestParam(required = false) String q,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int pageSize) {
+            @RequestParam(defaultValue = "500") int pageSize) {
 
         return ResponseEntity.ok(
                 bicicletaService.findAll(tipo, marca, precioMin, precioMax, q, page, pageSize)
