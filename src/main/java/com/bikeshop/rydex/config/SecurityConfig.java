@@ -60,6 +60,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         // Bicicletas GET — público (la galería Angular no requiere login)
                         .requestMatchers(HttpMethod.GET, "/api/bicicletas/**").permitAll()
+
+                        // Permite a cualquiera ver las imágenes subidas
+                        .requestMatchers("/uploads/**").permitAll()
+                        // Permite solo al administrador subir imágenes
+                        .requestMatchers("/api/media/**").hasRole("ADMIN")
+
                         // Admin endpoints — solo ADMIN
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         // El resto requiere autenticación

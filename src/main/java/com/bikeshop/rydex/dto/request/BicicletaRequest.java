@@ -25,7 +25,11 @@ public class BicicletaRequest {
 
     @NotNull
     @Positive
-    private BigDecimal precio;
+    private BigDecimal precio; // Precio de Venta
+
+    // NUEVO: Precio de Compra
+    @JsonProperty("precio_compra")
+    private BigDecimal precioCompra;
 
     @JsonProperty("stock_actual")
     private int stockActual;
