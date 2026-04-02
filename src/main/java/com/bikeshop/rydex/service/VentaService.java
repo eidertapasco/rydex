@@ -27,6 +27,7 @@ public class VentaService {
         VentaModel venta = new VentaModel();
         venta.setCliente(cliente);
         venta.setTotal(request.getTotal());
+        venta.setFecha(java.time.LocalDateTime.now());
 
         List<DetalleVentaModel> detalles = new ArrayList<>();
         for (VentaRequest.DetalleVentaRequest d : request.getDetalles()) {

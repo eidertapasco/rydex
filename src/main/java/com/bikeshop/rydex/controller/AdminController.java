@@ -57,4 +57,15 @@ public class AdminController {
 
         return ResponseEntity.ok(metrics);
     }
+
+    // GET /api/admin/clientes
+    @GetMapping("/clientes")
+    public ResponseEntity<java.util.List<Map<String, Object>>> getClientes() {
+        return ResponseEntity.ok(clienteRepository.findAll().stream()
+                .map(c -> Map.<String, Object>of(
+                        "id_cliente", c.getIdCliente(),
+                        "nombre", c.getNombre(),
+                        "email", c.getEmail()
+                )).toList());
+    }
 }

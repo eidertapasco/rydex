@@ -43,6 +43,18 @@ public class DataInitializer {
                 clienteRepository.save(cliente);
                 System.out.println("✅ Cliente creado: juan@email.com / cliente123");
             }
+
+            if (!clienteRepository.existsByEmail("mostrador@rydex.com")) {
+                ClienteModel mostrador = new ClienteModel();
+                mostrador.setNombre("Cliente Mostrador");
+                mostrador.setDocumento("999999999"); // Documento genérico
+                mostrador.setTelefono("0000000000");
+                mostrador.setEmail("mostrador@rydex.com");
+                mostrador.setPassword(passwordEncoder.encode("12345678")); // Contraseña que nunca se usará
+                mostrador.setRol(RolUsuario.CLIENTE);
+                clienteRepository.save(mostrador);
+                System.out.println("✅ Cliente Mostrador creado: mostrador@rydex.com");
+            }
         };
     }
 }

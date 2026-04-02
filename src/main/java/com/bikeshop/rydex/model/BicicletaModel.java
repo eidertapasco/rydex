@@ -34,8 +34,13 @@ public class BicicletaModel {
     @Enumerated(EnumType.STRING)
     private TipoBicicleta tipo;
 
+    // Este es el Precio de Venta (Público)
     @Column(nullable = false)
     private BigDecimal precio;
+
+    // NUEVO: Este es el Precio de Compra (Costo para la tienda)
+    @Column(name = "precio_compra")
+    private BigDecimal precioCompra;
 
     @Column(name = "imagen_url")
     @JsonProperty("imagen_url")

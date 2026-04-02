@@ -15,6 +15,7 @@ public class BicicletaResponse {
     private String modelo;
     private String tipo;
     private BigDecimal precio;
+    private BigDecimal precio_compra; // NUEVO
     private String imagen_url;
     private int stock_actual;
     private int stock_minimo;
@@ -24,17 +25,18 @@ public class BicicletaResponse {
     // Convierte el model a DTO
     public static BicicletaResponse from(BicicletaModel b) {
         BicicletaResponse dto = new BicicletaResponse();
-        dto.id_bicicleta = b.getIdBicicleta();
-        dto.sku          = b.getSku();
-        dto.marca        = b.getMarca();
-        dto.modelo       = b.getModelo();
-        dto.tipo         = b.getTipo() != null ? b.getTipo().name() : null;
-        dto.precio       = b.getPrecio();
-        dto.imagen_url   = b.getImagenUrl();
-        dto.stock_actual = b.getStockActual();
-        dto.stock_minimo = b.getStockMinimo();
-        dto.descripcion  = b.getDescripcion();
-        dto.etiqueta     = b.getEtiqueta();
+        dto.id_bicicleta  = b.getIdBicicleta();
+        dto.sku           = b.getSku();
+        dto.marca         = b.getMarca();
+        dto.modelo        = b.getModelo();
+        dto.tipo          = b.getTipo() != null ? b.getTipo().name() : null;
+        dto.precio        = b.getPrecio();
+        dto.precio_compra = b.getPrecioCompra(); // NUEVO
+        dto.imagen_url    = b.getImagenUrl();
+        dto.stock_actual  = b.getStockActual();
+        dto.stock_minimo  = b.getStockMinimo();
+        dto.descripcion   = b.getDescripcion();
+        dto.etiqueta      = b.getEtiqueta();
         return dto;
     }
 }
