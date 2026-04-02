@@ -23,25 +23,37 @@ public class AdminController {
 
     private final VentaRepository ventaRepository;
     private final BicicletaRepository bicicletaRepository;
-    private final ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository; // Lo dejamos por si lo uso luego
 
     // GET /api/admin/dashboard
     @GetMapping("/dashboard")
     public ResponseEntity<Map<String, Object>> dashboard() {
-        LocalDateTime inicioDia = LocalDateTime.now().toLocalDate().atStartOfDay();
+        // Fechas de corte
+        LocalDateTime inicioHoy = LocalDateTime.now().toLocalDate().atStartOfDay();
+        LocalDateTime inicioSemana = LocalDateTime.now().minusDays(7).toLocalDate().atStartOfDay();
 
-        BigDecimal ingresosDia = ventaRepository.sumTotalSince(inicioDia);
-        long totalVentas       = ventaRepository.count();
-        long totalClientes     = clienteRepository.count();
-        long stockBajo         = bicicletaRepository.findAll().stream()
+        // Cálculos de Hoy
+        BigDecimal ingresosHoy = ventaRepository.sumTotalSince(inicioHoy);
+        long ventasHoy = ventaRepository.countByFechaGreaterThanEqual(inicioHoy);
+
+        // Cálculos de la Semana
+        BigDecimal ingresosSemana = ventaRepository.sumTotalSince(inicioSemana);
+        long ventasSemana = ventaRepository.countByFechaGreaterThanEqual(inicioSemana);
+
+        // Cálculos de Inventario
+        long totalBicicletas = bicicletaRepository.count();
+        long stockBajo = bicicletaRepository.findAll().stream()
                 .filter(b -> b.getStockActual() <= b.getStockMinimo())
                 .count();
 
+        // Mapeo exacto a lo que Angular espera
         Map<String, Object> metrics = new HashMap<>();
-        metrics.put("ingresosDia",   ingresosDia != null ? ingresosDia : BigDecimal.ZERO);
-        metrics.put("totalVentas",   totalVentas);
-        metrics.put("totalClientes", totalClientes);
-        metrics.put("stockBajo",     stockBajo);
+        metrics.put("ventasHoy",       ventasHoy);
+        metrics.put("ingresosHoy",     ingresosHoy != null ? ingresosHoy : BigDecimal.ZERO);
+        metrics.put("totalBicicletas", totalBicicletas);
+        metrics.put("stockBajo",       stockBajo);
+        metrics.put("ventasSemana",    ventasSemana);
+        metrics.put("ingresosSemana",  ingresosSemana != null ? ingresosSemana : BigDecimal.ZERO);
 
         return ResponseEntity.ok(metrics);
     }

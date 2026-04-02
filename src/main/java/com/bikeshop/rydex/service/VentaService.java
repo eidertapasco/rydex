@@ -63,6 +63,14 @@ public class VentaService {
         return ventaRepository.findByFechaBetween(start, end);
     }
 
+    public List<VentaModel> findByRango(String fechaInicio, String fechaFin) {
+        java.time.LocalDate start = java.time.LocalDate.parse(fechaInicio);
+        java.time.LocalDate end = java.time.LocalDate.parse(fechaFin);
+
+        // Buscamos desde las 00:00:00 del primer día hasta las 23:59:59 del último día
+        return ventaRepository.findByFechaBetween(start.atStartOfDay(), end.atTime(23, 59, 59));
+    }
+
     public Map<String, Object> ventaToMap(VentaModel v) {
         return Map.of(
                 "id_venta", v.getIdVenta(),

@@ -19,13 +19,16 @@ public class VentaController {
 
     private final VentaService ventaService;
 
-    // GET /api/ventas  o  /api/ventas?fecha=2024-01-15
+    // GET /api/ventas?fechaInicio=2026-03-02&fechaFin=2026-03-05
     @GetMapping
     public ResponseEntity<List<VentaModel>> getAll(
-            @RequestParam(required = false) String fecha) {
-        List<VentaModel> ventas = (fecha != null && !fecha.isBlank())
-                ? ventaService.findByFecha(fecha)
+            @RequestParam(required = false) String fechaInicio,
+            @RequestParam(required = false) String fechaFin) {
+
+        List<VentaModel> ventas = (fechaInicio != null && !fechaInicio.isBlank() && fechaFin != null && !fechaFin.isBlank())
+                ? ventaService.findByRango(fechaInicio, fechaFin)
                 : ventaService.findAll();
+
         return ResponseEntity.ok(ventas);
     }
 

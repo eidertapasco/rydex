@@ -18,4 +18,7 @@ public interface VentaRepository extends JpaRepository<VentaModel, Long> {
 
     @Query("SELECT SUM(v.total) FROM VentaModel v WHERE v.fecha >= :inicio")
     java.math.BigDecimal sumTotalSince(@Param("inicio") LocalDateTime inicio);
+
+    // pa saber cuántas ventas se hicieron desde una fecha específica
+    long countByFechaGreaterThanEqual(LocalDateTime fecha);
 }
