@@ -24,4 +24,17 @@ public interface VentaRepository extends JpaRepository<VentaModel, Long> {
 
     // Busca todas las ventas de un cliente basándose en su email
     List<VentaModel> findByCliente_Email(String email);
+
+    // Suma todos el dinero que ha entrado por ventas
+    @Query("SELECT COALESCE(SUM(v.total), 0) FROM VentaModel v")
+    java.math.BigDecimal sumarIngresosTotales();
+
+    // Cuenta cuántas ventas se han hecho en total
+    @Query("SELECT COUNT(v) FROM VentaModel v")
+    long contarVentasTotales();
+
+    // Esta consulta calcula la utilidad real: (Precio Venta - Precio Compra) * Cantidad
+    @Query("SELECT COALESCE(SUM((dv.precioUnitario - b.precioCompra) * dv.cantidad), 0) " +
+            "FROM DetalleVentaModel dv JOIN dv.bicicleta b")
+    java.math.BigDecimal calcularUtilidadTotal();
 }
