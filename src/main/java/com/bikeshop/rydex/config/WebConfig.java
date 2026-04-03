@@ -10,7 +10,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Esta vaina le dice a Spring que las peticiones a /uploads/... busquen en la carpeta local 'uploads/'
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:uploads/");
+        // Esto lo comentamos porque Cloudinary se encarga ahora lo puse el 03/04/2026
+        /*registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:uploads/");*/
     }
 }
