@@ -25,7 +25,7 @@ public class AdminController {
     private final BicicletaRepository bicicletaRepository;
     private final ClienteRepository clienteRepository; // Lo dejamos por si lo uso luego
 
-    // GET /api/admin/dashboard
+    /* GET /api/admin/dashboard
     @GetMapping("/dashboard")
     public ResponseEntity<Map<String, Object>> dashboard() {
         // Fechas de corte
@@ -57,6 +57,9 @@ public class AdminController {
 
         return ResponseEntity.ok(metrics);
     }
+
+    esto se movio al dashboard controller
+    */
 
     // GET /api/admin/clientes
     @GetMapping("/clientes")

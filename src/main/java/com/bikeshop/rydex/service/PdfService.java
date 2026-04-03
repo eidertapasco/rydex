@@ -92,4 +92,86 @@ public class PdfService {
 
         return out.toByteArray();
     }
+
+    // Generar Reporte Financiero para el Admin
+    public byte[] generarReporteFinanciero(java.util.Map<String, Object> metrics) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Document document = new Document(PageSize.LETTER, 50, 50, 50, 50);
+
+        try {
+            PdfWriter.getInstance(document, out);
+            document.open();
+
+            // 1. TÍTULO Y FECHA
+            Font fontTitulo = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22, Color.BLACK);
+            Paragraph titulo = new Paragraph("RYDEX - REPORTE FINANCIERO", fontTitulo);
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            document.add(titulo);
+
+            java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            Paragraph subtitulo = new Paragraph("Generado el: " + java.time.LocalDateTime.now().format(formatter),
+                    FontFactory.getFont(FontFactory.HELVETICA, 12, Color.DARK_GRAY));
+            subtitulo.setAlignment(Element.ALIGN_CENTER);
+            subtitulo.setSpacingAfter(30f);
+            document.add(subtitulo);
+
+            // 2. TABLA DE MÉTRICAS FINANCIERAS
+            PdfPTable table = new PdfPTable(2); // 2 columnas
+            table.setWidthPercentage(80);
+            table.setWidths(new float[]{2f, 2f});
+
+            // Metodo auxiliar para no repetir código creando celdas
+            Font fontLabel = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);
+            Font fontValue = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
+
+            // Encabezados de la tabla
+            PdfPCell cellDesc = new PdfPCell(new Phrase("Descripción", fontLabel));
+            cellDesc.setBackgroundColor(new Color(40, 40, 40));
+            cellDesc.setPadding(10f);
+            table.addCell(cellDesc);
+
+            PdfPCell cellValor = new PdfPCell(new Phrase("Valor", fontLabel));
+            cellValor.setBackgroundColor(new Color(40, 40, 40));
+            cellValor.setPadding(10f);
+            table.addCell(cellValor);
+
+            // Filas de datos
+            String[][] datos = {
+                    {"Ingresos Totales (Ventas)", "$" + metrics.get("ingresosTotales").toString()},
+                    {"Egresos Totales (Compras)", "$" + metrics.get("egresosTotales").toString()},
+                    {"Ganancia Neta Real", "$" + metrics.get("gananciaNeta").toString()},
+                    {"Total de Ventas Registradas", metrics.get("ventasHoy").toString()},
+                    {"Modelos en Alerta de Stock", metrics.get("stockBajo").toString() + " de " + metrics.get("totalBicicletas").toString()}
+            };
+
+            for (String[] fila : datos) {
+                PdfPCell celda1 = new PdfPCell(new Phrase(fila[0], FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11, Color.DARK_GRAY)));
+                celda1.setPadding(10f);
+                table.addCell(celda1);
+
+                PdfPCell celda2 = new PdfPCell(new Phrase(fila[1], fontValue));
+                celda2.setPadding(10f);
+                // Si es la Ganancia Neta, la ponemos en verde
+                if (fila[0].contains("Ganancia")) {
+                    celda2.setPhrase(new Phrase(fila[1], FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, new Color(16, 185, 129))));
+                }
+                table.addCell(celda2);
+            }
+
+            document.add(table);
+
+            // 3. MENSAJE FINAL
+            Paragraph footer = new Paragraph("Este documento es confidencial y de uso exclusivo de la administración de Rydex.",
+                    FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 10, Color.GRAY));
+            footer.setAlignment(Element.ALIGN_CENTER);
+            footer.setSpacingBefore(40f);
+            document.add(footer);
+
+            document.close();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+
+        return out.toByteArray();
+    }
 }

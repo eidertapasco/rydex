@@ -40,4 +40,12 @@ public interface BicicletaRepository extends JpaRepository<BicicletaModel, Long>
             @Param("q") String q
     );
 
+    // Cuenta cuántas bicicletas diferentes hay
+    @Query("SELECT COUNT(b) FROM BicicletaModel b")
+    long contarTotalBicicletas();
+
+    // Cuenta cuántas bicicletas están en stock bajo (stock_actual <= stock_minimo)
+    @Query("SELECT COUNT(b) FROM BicicletaModel b WHERE b.stockActual <= b.stockMinimo AND b.stockActual > 0")
+    long contarBicicletasStockBajo();
+
 }
