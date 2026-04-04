@@ -1,0 +1,42 @@
+# ========================================
+# CONFIGURACIÓN GENERAL
+# ========================================
+spring.application.name=rydex
+server.port=8080
+
+# ========================================
+# BASE DE DATOS H2 (DESARROLLO LOCAL)
+# ========================================
+spring.datasource.url=jdbc:h2:mem:rydex_db;DB_CLOSE_DELAY=-1
+spring.datasource.username=sa
+spring.datasource.password=
+spring.datasource.driver-class-name=org.h2.Driver
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=update
+
+# Habilitar la consola de H2 en http://localhost:8080/h2-console
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# ESTO SOLUCIONA EL ERROR: Espera a que se creen las tablas para ejecutar data.sql
+spring.jpa.defer-datasource-initialization=true
+spring.sql.init.mode=always
+
+# ========================================
+# JPA / HIBERNATE
+# ========================================
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# ========================================
+# JWT (CON VALOR POR DEFECTO PARA LOCAL)
+# ========================================
+jwt.secret=${JWT_SECRET:rydex_clave_secreta_local_2026_muy_larga_y_segura_para_evitar_errores}
+jwt.expiration=86400000
+
+# ========================================
+# CLOUDINARY (CON VALORES POR DEFECTO PARA LOCAL)
+# ========================================
+cloudinary.cloud-name=${CLOUDINARY_CLOUD_NAME:dummy_cloud}
+cloudinary.api-key=${CLOUDINARY_API_KEY:12345}
+cloudinary.api-secret=${CLOUDINARY_API_SECRET:dummy_secret}
