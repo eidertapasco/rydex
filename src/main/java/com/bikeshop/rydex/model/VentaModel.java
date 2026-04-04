@@ -29,6 +29,10 @@ public class VentaModel {
     @Column(nullable = false)
     private BigDecimal total;
 
+    // NUEVO: Dirección de envío para ventas virtuales
+    @Column(name = "direccion_envio")
+    private String direccionEnvio;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

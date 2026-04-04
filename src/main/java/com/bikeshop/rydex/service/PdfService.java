@@ -37,21 +37,61 @@ public class PdfService {
             subtitulo.setSpacingAfter(20);
             document.add(subtitulo);
 
-            // 2. DATOS DE LA VENTA Y CLIENTE
+            // 2. DATOS DE LA VENTA Y CLIENTE (ACTUALIZADO)
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             String fechaStr = venta.getFecha() != null ? venta.getFecha().format(formatter) : "N/A";
 
-            Font fontDatos = FontFactory.getFont(FontFactory.HELVETICA, 11, Color.BLACK);
-            document.add(new Paragraph("Factura #: V-" + venta.getIdVenta(), fontDatos));
-            document.add(new Paragraph("Fecha: " + fechaStr, fontDatos));
-            document.add(new Paragraph("Cliente: " + venta.getCliente().getNombre(), fontDatos));
-            document.add(new Paragraph("Email: " + venta.getCliente().getEmail(), fontDatos));
-            document.add(new Paragraph(" ", fontDatos)); // Espacio en blanco
+            Font fontDatosBold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, Color.BLACK);
+            Font fontDatos = FontFactory.getFont(FontFactory.HELVETICA, 10, Color.BLACK);
+
+            // Usamos una mini-tabla para alinear la info del cliente a la izquierda y la de la factura a la derecha
+            PdfPTable headerTable = new PdfPTable(2);
+            headerTable.setWidthPercentage(100);
+            headerTable.setWidths(new float[]{1f, 1f});
+
+            // Columna Izquierda (Cliente)
+            PdfPCell cellCliente = new PdfPCell();
+            cellCliente.setBorder(Rectangle.NO_BORDER);
+            cellCliente.addElement(new Paragraph("DATOS DEL CLIENTE:", fontDatosBold));
+            cellCliente.addElement(new Paragraph("Nombre: " + venta.getCliente().getNombre(), fontDatos));
+            cellCliente.addElement(new Paragraph("Documento: " + (venta.getCliente().getDocumento() != null ? venta.getCliente().getDocumento() : "N/A"), fontDatos));
+            cellCliente.addElement(new Paragraph("Teléfono: " + (venta.getCliente().getTelefono() != null ? venta.getCliente().getTelefono() : "N/A"), fontDatos));
+            cellCliente.addElement(new Paragraph("Email: " + (venta.getCliente().getEmail() != null ? venta.getCliente().getEmail() : "N/A"), fontDatos));
+
+            // Validamos la dirección de envío
+            String direccion = (venta.getDireccionEnvio() != null && !venta.getDireccionEnvio().isBlank())
+                    ? venta.getDireccionEnvio()
+                    : "Entrega en tienda / Mostrador";
+            cellCliente.addElement(new Paragraph("Dirección: " + direccion, fontDatos));
+            headerTable.addCell(cellCliente);
+
+            // Columna Derecha (Factura)
+            PdfPCell cellFactura = new PdfPCell();
+            cellFactura.setBorder(Rectangle.NO_BORDER);
+            cellFactura.setHorizontalAlignment(Element.ALIGN_RIGHT);
+
+            // Creamos los párrafos alineados a la derecha
+            Paragraph pFactura = new Paragraph("FACTURA #: V-" + venta.getIdVenta(), fontDatosBold);
+            pFactura.setAlignment(Element.ALIGN_RIGHT);
+            cellFactura.addElement(pFactura);
+
+            Paragraph pFecha = new Paragraph("Fecha: " + fechaStr, fontDatos);
+            pFecha.setAlignment(Element.ALIGN_RIGHT);
+            cellFactura.addElement(pFecha);
+
+            headerTable.addCell(cellFactura);
+
+            // Añadimos el encabezado al documento
+            document.add(headerTable);
+
+            // Espacio antes de la tabla de productos
+            document.add(new Paragraph(" ", fontDatos));
 
             // 3. TABLA DE PRODUCTOS
             PdfPTable table = new PdfPTable(4); // 4 columnas
             table.setWidthPercentage(100);
             table.setWidths(new float[]{4f, 1f, 2f, 2f}); // Proporción de las columnas
+            table.setSpacingBefore(10f);
 
             // Encabezados de la tabla
             String[] encabezados = {"Descripción", "Cant.", "V. Unitario", "Subtotal"};
@@ -82,7 +122,7 @@ public class PdfService {
             Paragraph total = new Paragraph("TOTAL PAGADO: $" + venta.getTotal().toString(),
                     FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Color.BLACK));
             total.setAlignment(Element.ALIGN_RIGHT);
-            total.setSpacingBefore(15f); // <-- CORREGIDO AQUÍ
+            total.setSpacingBefore(15f);
             document.add(total);
 
             document.close();
