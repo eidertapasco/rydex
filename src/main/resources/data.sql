@@ -3,7 +3,6 @@
 -- ============================================================
 
 
-
 -- PROVEEDORES
 INSERT INTO proveedores (nombre_empresa, persona_contacto, telefono_contacto, email_contacto)
 VALUES ('Trek Colombia', 'Carlos Ruiz', '6014567890', 'ventas@trekcolombia.com');
@@ -55,7 +54,7 @@ VALUES ('EL-SCOTT-004', 'Scott', 'Sub Sport eRIDE 20', 'Electric', 9600000, 9000
 
 -- BICICLETAS GEAR
 INSERT INTO bicicletas (sku, marca, modelo, tipo, precio, precio_compra, stock_actual, stock_minimo, descripcion, etiqueta, imagen_url)
-VALUES ('GR-PURE-001', 'Pure Cycles', 'Original Fixed Gear', 'Gear', 1200000, 9000000, 12, 5, 'Fixed gear clásica, cuadro cromoly, llanta doble pared, ideal para ciudad.', NULL, '/placeholder-bike.jpg');
+VALUES ('GR-PURE-001', 'Pure Cycles', 'Original Fixed Gear', 'Gear', 1200000, 900000, 12, 5, 'Fixed gear clásica, cuadro cromoly, llanta doble pared, ideal para ciudad.', NULL, '/placeholder-bike.jpg');
 
 INSERT INTO bicicletas (sku, marca, modelo, tipo, precio, precio_compra, stock_actual, stock_minimo, descripcion, etiqueta, imagen_url)
 VALUES ('GR-STATE-002', 'State Bicycle', 'Core Line', 'Gear', 1800000, 1000000, 8, 3, 'Single speed premium, cuadro aluminio 6061, flip-flop hub, colores vibrantes.', 'NEW ARRIVAL', '/placeholder-bike.jpg');
