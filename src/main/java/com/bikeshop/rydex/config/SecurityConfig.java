@@ -34,7 +34,6 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final ClienteRepository clienteRepository;
 
-    // Le dice a Spring Security que busque usuarios en la BD, no en memoria
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> clienteRepository.findByEmail(email)
@@ -50,28 +49,26 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                // 1. Conecta la configuración CORS de abajo con Spring Security
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // H2 Console (solo desarrollo)
+                        // Console H2 (solo por si se necesita en local)
                         .requestMatchers("/h2-console/**").permitAll()
-                        // Auth endpoints — públicos
-                        .requestMatchers("/api/auth/**").permitAll()
-                        // Bicicletas GET — público (la galería Angular no requiere login)
-                        .requestMatchers(HttpMethod.GET, "/api/bicicletas/**").permitAll()
 
-                        // Permite a cualquiera ver las imágenes subidas
-                        .requestMatchers("/uploads/**").permitAll()
-                        // Permite solo al administrador subir imágenes
+                        // 2. CORRECCIÓN DEL 403: Para permitir las rutas con y sin el "/api"
+                        .requestMatchers("/api/auth/**", "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/bicicletas/**", "/bicicletas/**").permitAll()
+
+                        // Endpoints protegidos (solo ADMIN puede subir fotos y manejar el panel)
                         .requestMatchers("/api/media/**").hasRole("ADMIN")
-
-                        // Admin endpoints — solo ADMIN
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        // El resto requiere autenticación
+
+                        // Todito lo demás requiere estar logueado
                         .anyRequest().authenticated()
                 )
-                // Necesario para que H2 console funcione en iframe
+                // Necesario para que H2 console funcione si se requiere
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -81,10 +78,16 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        // Permite el frontend Angular en desarrollo
-        config.setAllowedOrigins(List.of("http://localhost:4200"));
+
+        // 3. CORRECCIÓN VERCEL: Permite cualquier origen (localhost, Vercel, etc.)
+        config.setAllowedOriginPatterns(List.of("*"));
+
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
+
+        // Exponemos las cabeceras para que el frontend pueda leer el PDF y el JWT
+        config.setExposedHeaders(List.of("Authorization", "Content-Type"));
+
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
