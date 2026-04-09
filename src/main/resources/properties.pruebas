@@ -12,7 +12,7 @@ spring.datasource.username=sa
 spring.datasource.password=
 spring.datasource.driver-class-name=org.h2.Driver
 spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-spring.jpa.hibernate.ddl-auto=update
+spring.jpa.hibernate.ddl-auto=create-drop
 
 # Habilitar la consola de H2 en http://localhost:8080/h2-console
 spring.h2.console.enabled=true
