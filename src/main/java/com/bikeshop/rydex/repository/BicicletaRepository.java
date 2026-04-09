@@ -45,7 +45,7 @@ public interface BicicletaRepository extends JpaRepository<BicicletaModel, Long>
     long contarTotalBicicletas();
 
     // Cuenta cuántas bicicletas están en stock bajo (stock_actual <= stock_minimo)
-    @Query("SELECT COUNT(b) FROM BicicletaModel b WHERE b.stockActual <= b.stockMinimo AND b.stockActual > 0")
+    @Query("SELECT COUNT(b) FROM BicicletaModel b WHERE b.stockActual <= b.stockMinimo")
     long contarBicicletasStockBajo();
 
 }

@@ -46,4 +46,50 @@ public class DashboardController {
                 .headers(headers)
                 .body(pdfBytes);
     }
+
+    // GET /api/admin/reporte-ventas-detalle?inicio=2026-04-01T00:00:00&fin=2026-04-08T23:59:59
+    @GetMapping("/reporte-ventas-detalle")
+    public ResponseEntity<byte[]> descargarReporteVentasDetalle(
+            @org.springframework.web.bind.annotation.RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME) java.time.LocalDateTime inicio,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME) java.time.LocalDateTime fin) {
+
+        byte[] pdfBytes = dashboardService.generarPdfVentasPorFechas(inicio, fin);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "Reporte_Ingresos_" + java.time.LocalDate.now() + ".pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfBytes);
+    }
+
+    // GET /api/admin/reporte-compras-detalle?inicio=2026-04-01T00:00:00&fin=2026-04-08T23:59:59
+    @GetMapping("/reporte-compras-detalle")
+    public ResponseEntity<byte[]> descargarReporteComprasDetalle(
+            @org.springframework.web.bind.annotation.RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME) java.time.LocalDateTime inicio,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME) java.time.LocalDateTime fin) {
+
+        byte[] pdfBytes = dashboardService.generarPdfComprasPorFechas(inicio, fin);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "Reporte_Egresos_" + java.time.LocalDate.now() + ".pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfBytes);
+    }
+
+    // GET /api/admin/reporte-ganancias-detalle
+    @GetMapping("/reporte-ganancias-detalle")
+    public ResponseEntity<byte[]> descargarReporteGananciasDetalle(
+            @org.springframework.web.bind.annotation.RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME) java.time.LocalDateTime inicio,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME) java.time.LocalDateTime fin) {
+
+        byte[] pdfBytes = dashboardService.generarPdfGananciasPorFechas(inicio, fin);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "Reporte_Ganancia_Neta_" + java.time.LocalDate.now() + ".pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfBytes);
+    }
+
 }
